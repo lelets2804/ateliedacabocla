@@ -37,7 +37,8 @@ const PRODUCTS = [
     id: "p3",
     category: "guias",
     name: "Guia de Iemanjá",
-    desc: "Feita com miçangas em tons de azul e branco que representam a força e a serenidade de Iemanjá.",
+    desc:
+      "Feita com miçangas em tons de azul e branco que representam a força e a serenidade de Iemanjá.",
     price: 99.9,
     image: iemanjaImg,
   },
@@ -69,9 +70,7 @@ export default function Home() {
     let filtered = PRODUCTS;
 
     if (activeCategory !== "todos") {
-      filtered = filtered.filter(
-        (p) => p.category === activeCategory
-      );
+      filtered = filtered.filter((p) => p.category === activeCategory);
     }
 
     if (search) {
@@ -124,14 +123,11 @@ export default function Home() {
         onOpenCart={() => setCartOpen(true)}
       />
 
-      {/* DRAWER DO CARRINHO */}
+      {/* CARRINHO */}
       <AnimatePresence>
         {cartOpen && (
           <>
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
               className="fixed inset-0 bg-black/30 z-40"
               onClick={() => setCartOpen(false)}
             />
@@ -149,40 +145,34 @@ export default function Home() {
               </div>
 
               <div className="flex-1 overflow-auto p-6 space-y-4">
-                {cartItems.length === 0 ? (
-                  <p className="text-sm text-green-700">
-                    Seu carrinho está vazio 🌿
-                  </p>
-                ) : (
-                  cartItems.map((item) => (
-                    <div
-                      key={item.id}
-                      className="border border-green-100 rounded-xl p-3 flex gap-3"
-                    >
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="w-16 h-16 object-cover rounded-lg"
-                      />
+                {cartItems.map((item) => (
+                  <div
+                    key={item.id}
+                    className="border border-green-100 rounded-xl p-3 flex gap-3"
+                  >
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="w-16 h-16 object-cover rounded-lg"
+                    />
 
-                      <div className="flex-1">
-                        <p className="font-semibold text-sm">
-                          {item.name}
-                        </p>
-                        <p className="text-xs text-green-700">
-                          {formatBRL(item.price)}
-                        </p>
+                    <div className="flex-1">
+                      <p className="font-semibold text-sm">
+                        {item.name}
+                      </p>
+                      <p className="text-xs text-green-700">
+                        {formatBRL(item.price)}
+                      </p>
 
-                        <button
-                          onClick={() => removeFromCart(item.id)}
-                          className="mt-2 text-xs border px-2 py-1 rounded-lg hover:bg-green-50"
-                        >
-                          Remover
-                        </button>
-                      </div>
+                      <button
+                        onClick={() => removeFromCart(item.id)}
+                        className="mt-2 text-xs border px-2 py-1 rounded-lg hover:bg-green-50"
+                      >
+                        Remover
+                      </button>
                     </div>
-                  ))
-                )}
+                  </div>
+                ))}
               </div>
 
               <div className="p-6">
@@ -200,54 +190,15 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {/* VISUALIZADOR DE IMAGEM */}
-      <AnimatePresence>
-        {selectedImage && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/70 z-50"
-              onClick={() => setSelectedImage(null)}
-            />
-
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              transition={{ duration: 0.25 }}
-              className="fixed inset-0 z-50 flex items-center justify-center p-6"
-            >
-              <div className="relative max-w-2xl w-full">
-                <img
-                  src={selectedImage}
-                  alt="Imagem ampliada"
-                  className="w-full rounded-3xl shadow-2xl"
-                />
-
-                <button
-                  onClick={() => setSelectedImage(null)}
-                  className="absolute top-4 right-4 bg-white/80 backdrop-blur-md rounded-full px-3 py-1 text-sm font-semibold"
-                >
-                  ✕
-                </button>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-
-      {/* CONTEÚDO */}
       <main className="relative z-10 px-6 pb-16 max-w-md mx-auto space-y-8">
 
         {/* CATEGORIAS */}
-        <div className="flex gap-2 overflow-x-auto pb-2">
+        <div className="flex gap-2 pb-2">
           {CATEGORIES.map((cat) => (
             <button
               key={cat.key}
               onClick={() => setActiveCategory(cat.key)}
-              className={`px-4 py-2 rounded-full text-sm border transition whitespace-nowrap ${
+              className={`px-4 py-2 rounded-full text-sm border transition ${
                 activeCategory === cat.key
                   ? "bg-emerald-600 text-white border-emerald-600"
                   : "bg-white text-green-800 border-green-100 hover:bg-green-50"
@@ -258,38 +209,38 @@ export default function Home() {
           ))}
         </div>
 
-        {/* PRODUTOS */}
-        {filteredProducts.map((p) => (
-          <div
-            key={p.id}
-            className="bg-white/80 backdrop-blur-md rounded-3xl shadow border border-green-100 overflow-hidden"
-          >
-            <img
-              src={p.image}
-              alt={p.name}
-              onClick={() => setSelectedImage(p.image)}
-              className="h-52 w-full object-cover cursor-pointer hover:scale-105 transition duration-300"
-            />
+        {/* PRODUTOS CARROSSEL */}
+        <div className="flex gap-4 overflow-x-auto pb-4">
+          {filteredProducts.map((p) => (
+            <div
+              key={p.id}
+              className="min-w-[220px] bg-white/80 backdrop-blur-md rounded-3xl shadow border border-green-100 overflow-hidden"
+            >
+              <img
+                src={p.image}
+                alt={p.name}
+                onClick={() => setSelectedImage(p.image)}
+                className="h-40 w-full object-cover cursor-pointer"
+              />
 
-            <div className="p-6">
-              <h3 className="font-semibold text-lg">{p.name}</h3>
-              <p className="text-sm text-green-700 mt-2">
-                {p.desc}
-              </p>
+              <div className="p-4">
+                <h3 className="font-semibold text-sm">{p.name}</h3>
 
-              <div className="mt-4 font-semibold">
-                {formatBRL(p.price)}
+                <div className="mt-2 font-semibold text-sm">
+                  {formatBRL(p.price)}
+                </div>
+
+                <button
+                  onClick={() => addToCart(p.id)}
+                  className="mt-3 w-full bg-emerald-600 text-white py-2 rounded-xl text-sm hover:bg-emerald-700 transition"
+                >
+                  🛒 Adicionar
+                </button>
               </div>
-
-              <button
-                onClick={() => addToCart(p.id)}
-                className="mt-4 w-full bg-emerald-600 text-white py-3 rounded-2xl hover:bg-emerald-700 transition"
-              >
-                🛒 Adicionar ao carrinho
-              </button>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+
       </main>
     </div>
   );
